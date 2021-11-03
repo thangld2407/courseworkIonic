@@ -1,0 +1,7 @@
+{
+  "name": "course-work",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
