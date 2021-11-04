@@ -1,0 +1,45 @@
+.ios .header {
+    background-color: lightblue;
+    /* margin-bottom: 20px; */
+    text-align: center;
+    border-radius: 20px;
+    /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+}
+.content {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.display-content, .display-detail {
+    display: flex;
+    flex-direction: column;
+    /* a-content: flex-end; */
+    align-items: flex-start;
+
+}
+.display-detail > p {
+    overflow: hidden;
+    
+}
+.display-content > p {
+    font-weight: bold;
+}
+.container-content {
+    background-color: #ddd;
+}
+.btn-create {
+    margin: 20px 20px 0 20px;
+}
+.search {
+    width: 100%;
+}
+.btn-icon {
+    text-align: center;
+}
+.footer {
+    background-color: lightblue;
+    border-radius: 20px;
+}
+.text-color {
+    color: blue;
+}
