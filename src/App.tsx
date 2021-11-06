@@ -41,7 +41,7 @@ const App: React.FC = () => (
           <Create />
         </Route>
         <Route exact path="/update/:id">
-              <Update />
+          <Update />
         </Route>
       </IonRouterOutlet>
       {/* <IonTabBar slot="bottom">

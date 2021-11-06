@@ -1,11 +1,11 @@
-import {openDB} from 'idb';
+import { openDB } from 'idb';
 import { Room } from './room';
 
 const DATABASE_NAME = 'room';
 
 async function initDB() {
     const db = await openDB(DATABASE_NAME, 1, {
-        upgrade(db){
+        upgrade(db) {
             const store = db.createObjectStore('room', {
                 keyPath: 'id',
                 autoIncrement: true,
@@ -14,23 +14,23 @@ async function initDB() {
     });
 };
 
-initDB().then (() => {
+initDB().then(() => {
     console.log("Database already to use");
 });
 
-export async function  createRoom(room:any) {
-    const db = await openDB(DATABASE_NAME, 1 );
+export async function createRoom(room: any) {
+    const db = await openDB(DATABASE_NAME, 1);
 
     await db.put('room', room)
-    .then(() => {
-        console.log("Create 1 room: ", room);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+        .then(() => {
+            console.log("Create 1 room: ", room);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 };
 
-export async function updateRoom(dataUpdateRoom:any, id: number) {
+export async function updateRoom(dataUpdateRoom: any, id: number) {
     const db = await openDB(DATABASE_NAME, 1);
     const room = await db.transaction('room').objectStore('room').get(id) as Room;
     room.properties = dataUpdateRoom.properties;
@@ -50,7 +50,7 @@ export async function updateRoom(dataUpdateRoom:any, id: number) {
         })
 };
 
-export async function deleteRoom(id:number) {
+export async function deleteRoom(id: number) {
     const db = await openDB(DATABASE_NAME, 1);
 
     await db.delete('room', id)
@@ -70,6 +70,13 @@ export async function getOneRoom(id: number) {
     return room;
 }
 
+export async function getByName(name: string) {
+    const db = await openDB(DATABASE_NAME, 1);
+    const roomByName = await db.transaction('room').objectStore('room').get(name);
+    console.log(roomByName);
+    return roomByName;
+}
+
 export async function getAllRoom() {
     const db = await openDB(DATABASE_NAME, 1);
 
@@ -77,7 +84,7 @@ export async function getAllRoom() {
 
     let allRoom = [];
 
-    while(room){
+    while (room) {
         allRoom.push(room.value);
         room = await room.continue();
     }
