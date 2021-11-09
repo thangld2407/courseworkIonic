@@ -1,18 +1,18 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToast, IonToolbar, useIonToast } from "@ionic/react";
+import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToast, IonToolbar, useIonAlert, useIonToast } from "@ionic/react";
 import { addCircleOutline as add, bed } from 'ionicons/icons'
 
 import './Home.css';
 
 import { createRoom } from "../databaseHandle";
 import { useState } from "react";
-import { useHistory, useRouteMatch } from "react-router";
+import { useHistory } from "react-router";
 
-export function validateEmptyOrWhiteSpace(value: string) {
+export function isEmptyOrWhiteSpace(value: string) {
   const re = /^\s*$/;
   return re.test(value);
 }
 
-export function validateNumber(value: string) {
+export function isNumber(value: string) {
   const re = /^\d+$/;
   return re.test(value);
 }
@@ -28,6 +28,7 @@ function convertDate(date: string) {
   }
 
   const newDate = new Date(date);
+
   const year = newDate.getFullYear();
   const month = (newDate.getMonth() + 1);
   const day = newDate.getDay();
@@ -49,21 +50,21 @@ function validateForm(Form: any) {
   const bedrooms = ['Studio', 'One', 'Two'];
   const furnished = ['Furnished', 'Unfurnished', 'PartFunished'];
 
-  let isValidate = [];
+  let isValidated = [];
 
   for (const key in Form) {
     if (Object.prototype.hasOwnProperty.call(Form, key)) {
       const el = Form[key];
       switch (key) {
         case 'monthlyRentPrice': {
-          if (!validateNumber(el) || validateEmptyOrWhiteSpace(el)) {
-            isValidate.push('You need to enter monthly rent price');
+          if (!isNumber(el)) {
+            isValidated.push('You need to enter monthly rent price');
           }
           break;
         }
         case 'dateTime': {
           if (!validateDate(el)) {
-            isValidate.push('You need to enter Date Time')
+            isValidated.push('You need to enter Date Time')
           }
           break;
         }
@@ -71,27 +72,27 @@ function validateForm(Form: any) {
 
           break;
         }
-        case 'houses': {
+        case 'properties': {
           if (!properties.includes(el)) {
-            isValidate.push('You need to enter type of Houses');
+            isValidated.push('You need to enter type of Houses');
           }
           break;
         }
         case 'bedrooms': {
           if (!bedrooms.includes(el)) {
-            isValidate.push('You need to enter type of Bedrooms');
+            isValidated.push('You need to enter type of Bedrooms');
           }
           break;
         }
-        case 'furnitures': {
+        case 'furnished': {
           if (!furnished.includes(el)) {
-            isValidate.push(' You need to enter type of Furnitures');
+            isValidated.push('You need to enter type of Furnitures');
           }
           break;
         }
         case 'reporter': {
-          if (validateEmptyOrWhiteSpace(el)) {
-            isValidate.push('You need to enter name of Reporter');
+          if (isEmptyOrWhiteSpace(el)) {
+            isValidated.push('You need to enter name of Reporter');
           }
           break;
         }
@@ -101,11 +102,11 @@ function validateForm(Form: any) {
       }
     }
   }
-  return isValidate;
+  return isValidated;
 }
 
-function createMessageError(listError: any) {
-  const message = listError.join('||');
+function notiError(err: any) {
+  const message = err.join('<br>');
 
   return `${message}`;
 }
@@ -124,6 +125,7 @@ const Create: React.FC = () => {
   const [colorMessage, setColorMessage] = useState('');
 
   const history = useHistory();
+  const [prensent] = useIonAlert();
 
   const addNewRoom = async () => {
     const newRoom = {
@@ -138,18 +140,39 @@ const Create: React.FC = () => {
     const validateFormAddNewRoom: any = validateForm(newRoom);
 
     if (validateFormAddNewRoom.length === 0) {
+      prensent({
+        header: 'Do you want to create room with data',
+        message: `
+                  <p>${properties}</p>
+                  <p>${bedrooms}</p>
+                  <p>${convertDate(dateTime)}</p>
+                  <p>${monthlyRentPrice}</p>
+                  <p>${furnished}</p>
+                  <p>${notes}</p>
+                  <p>${reporter}</p>
+        `,
+        buttons: [
+          'No',
+          {
+            text: 'Yes', handler: async (d) => {
+              await createRoom(newRoom);
 
-      setMessage('You created a new room');
-      setShowToast(true);
-      setColorMessage('success');
-      await createRoom(newRoom);
-      history.goBack();
+              setMessage('Created a new rooom');
+              setShowToast(true);
+              setColorMessage('success');
 
-      setTimeout(() => {
-        setShowToast(false);
-      }, 3000)
+              history.goBack();
+  
+              setTimeout(() => {
+                setShowToast(false);
+              }, 3000);
+            }
+          }
+        ],
+        onDidDismiss: (e) => console.log("Dismiss")
+      })
     } else {
-      setMessage(createMessageError(validateFormAddNewRoom));
+      setMessage(notiError(validateFormAddNewRoom));
       setShowToast(true);
       setColorMessage('warning');
 
@@ -200,7 +223,7 @@ const Create: React.FC = () => {
             <IonLabel position="floating">Furniture Type</IonLabel>
             <IonSelect onIonChange={e => setFurnished(e.detail.value)} >
               <IonSelectOption value="Furnished">Furnished</IonSelectOption>
-              <IonSelectOption value="Part Furnished">Part Furnished</IonSelectOption>
+              <IonSelectOption value="PartFunished">Part Furnished</IonSelectOption>
               <IonSelectOption value="Unfurnished">Unfurnished</IonSelectOption>
             </IonSelect>
           </IonItem>

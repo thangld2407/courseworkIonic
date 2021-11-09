@@ -1,5 +1,5 @@
-import { IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonPage, IonRefresher, IonRefresherContent, IonRow, IonSearchbar, IonTitle, IonToast, IonToolbar, useIonAlert } from '@ionic/react';
-import { home as homeIcon, create as createIcon, home, add, close, createOutline, addCircle, key } from 'ionicons/icons'
+import { IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonPage, IonRefresher, IonRefresherContent, IonRow, IonSearchbar, IonSelect, IonSelectOption, IonTitle, IonToast, IonToolbar, useIonAlert } from '@ionic/react';
+import { home as homeIcon, create as createIcon, home, add, close, createOutline, addCircle, key, searchCircleOutline, searchCircle, searchCircleSharp, searchOutline } from 'ionicons/icons'
 
 import './Home.css';
 
@@ -22,12 +22,13 @@ const Home: React.FC = () => {
     fetchData();
   }, []);
   function doRefresh(event: any) {
-    console.log("Refesh data");
+    setMessage('Data has been updated');
+    setShowToast(true);
     fetchData();
-    
-    setTimeout(() => {
+    setTimeout(()=>{
       event.detail.complete();
-    }, 50)
+      setShowToast(false);
+    },500)
   }
   async function handeDelete(id: number) {
     prensent({
@@ -35,24 +36,41 @@ const Home: React.FC = () => {
       message: 'Do You Want To Delete This Room',
       buttons: [
         'No',
-        {text:'Yes', handler: async (d) =>{
-          await deleteRoom(id);
-          setMessage('You have been delete this rooom');
-          setShowToast(true);
+        {
+          text: 'Yes', handler: async (d) => {
+            await deleteRoom(id);
+            setMessage('You have been delete this rooom');
+            setShowToast(true);
 
-          setTimeout(()=>{
-            setShowToast(false);
-          }, 3000);
-          await fetchData();
-        }}
+            setTimeout(() => {
+              setShowToast(false);
+            }, 3000);
+            await fetchData();
+          }
+        }
       ],
       onDidDismiss: (e) => console.log("Dismiss")
     })
   }
 
-  async function handleSearch(name: any) {
+  async function handleSearch(event: any) {
+    setKeySearch(event.detail.value);
 
-  }
+    let allRoom = await getAllRoom();
+    console.log(event.detail.value);
+    if (event.detail.value) {
+        let res = [];
+        for (let i = 0; i < allRoom.length; i++) {
+            if (allRoom[i].properties.includes(event.detail.value)) {
+                res.push(allRoom[i])
+                console.log(allRoom[i]);
+            }
+        }
+        setRooms(res);
+    } else {
+        setRooms(allRoom);
+    }
+}
 
   return (
     <IonPage className="container-content">
@@ -73,7 +91,33 @@ const Home: React.FC = () => {
           <IonRow>
             <div className="search">
               <IonCol>
-                <IonSearchbar></IonSearchbar>
+                <IonSearchbar value={keySearch} onIonChange={event => handleSearch(event)} ></IonSearchbar>
+              </IonCol>
+            </div>
+          </IonRow>
+          <IonRow>
+            <div className="search-bar">
+              <IonCol size="9">
+                {/* <IonItem */}
+                  {/* <IonLabel position="floating">Select bedroom to filter</IonLabel> */}
+                  <IonList>
+                    <IonItem>
+                      <IonLabel position="floating">Select room</IonLabel>
+                      <IonSelect value="">
+                        <IonSelectOption value="One">One</IonSelectOption>
+                        <IonSelectOption value="Studio">Studio</IonSelectOption>
+                        <IonSelectOption value="Two">Two</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                  </IonList>
+                
+              </IonCol>
+              <IonCol size="3" className="btn-find">
+                  <IonList>
+                    <IonButton color="light" expand="block">
+                      <IonIcon icon={searchOutline} />
+                    </IonButton>
+                  </IonList>
               </IonCol>
             </div>
           </IonRow>
