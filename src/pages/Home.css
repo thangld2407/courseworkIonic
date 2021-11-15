@@ -50,11 +50,31 @@
 .text-color {
     color: blue;
 }
-
+.card-header {
+    background-color: #42f56c;
+    border-radius: 10px;
+    /* padding: 0px 0px; */
+}
+.card-header > h2 {
+    padding: 10px 0;
+}
+.card-content > p {
+    font-size: 24px;
+}
+.display-content > p, .display-detail >p {
+    font-size: 16px;
+}
 .search-bar {
     display: flex;
     flex-direction: row;
     justify-content: center;
     text-align: center;
     align-items: center;width: 100%;
+}
+
+.confirm {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }

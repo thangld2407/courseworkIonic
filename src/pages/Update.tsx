@@ -10,27 +10,27 @@ import { Room } from '../room'
 interface MyParams {
   id: string
 }
-export function validateEmptyOrWhiteSpace(value: string) {
+export function validateEmptyOrWhiteSpace(el: string) {
   const re = /^\s*$/;
-  return re.test(value);
+  return re.test(el);
 }
 
-export function validateNumber(value: string) {
+export function validateNumber(el: string) {
   const re = /^\d+$/;
-  return re.test(value);
+  return re.test(el);
 }
 
-export function validateDate(value: string) {
+export function validateDate(el: string) {
   const re = /^\d{4}[\/.]\d{1,2}[\/.]\d{1,2}$/;
-  return re.test(value);
+  return re.test(el);
 }
 
-function convertDate(date: string) {
-  if (!date) {
+function convertDate(el: string) {
+  if (!el) {
     return '';
   }
 
-  const newDate = new Date(date);
+  const newDate = new Date(el);
   const year = newDate.getFullYear();
   const month = (newDate.getMonth() + 1);
   const day = newDate.getDay();

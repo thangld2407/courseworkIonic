@@ -141,15 +141,15 @@ const Create: React.FC = () => {
 
     if (validateFormAddNewRoom.length === 0) {
       prensent({
-        header: 'Do you want to create room with data',
+        header: 'Confirm Data',
         message: `
-                  <p>${properties}</p>
-                  <p>${bedrooms}</p>
-                  <p>${convertDate(dateTime)}</p>
-                  <p>${monthlyRentPrice}</p>
-                  <p>${furnished}</p>
-                  <p>${notes}</p>
-                  <p>${reporter}</p>
+                  <p><b>Properties</b>: ${properties}</p>
+                  <p><b>Bedrooms</b>: ${bedrooms}</p>
+                  <p><b>Create at: </b>${convertDate(dateTime)}</p>
+                  <p><b>Monthly Rent Price: </b>${monthlyRentPrice}</p>
+                  <p><b>Furnished: </b>${furnished}</p>
+                  <p><b>Notes: </b>${notes}</p>
+                  <p><b>Reporter: </b>${reporter}</p>
         `,
         buttons: [
           'No',
@@ -161,7 +161,7 @@ const Create: React.FC = () => {
               setShowToast(true);
               setColorMessage('success');
 
-              history.goBack();
+              history.push('/home');
   
               setTimeout(() => {
                 setShowToast(false);

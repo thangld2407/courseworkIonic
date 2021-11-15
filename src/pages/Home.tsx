@@ -17,12 +17,12 @@ const Home: React.FC = () => {
     const allRoom = await getAllRoom();
     setRooms(allRoom);
   }
-  useEffect(() => {
+   useEffect(() => {
     // console.log('use effect')
-    fetchData();
+     fetchData();
   }, []);
-  function doRefresh(event: any) {
-    setMessage('Data has been updated');
+  async function doRefresh(event: any) {
+    setMessage('Data have up to date');
     setShowToast(true);
     fetchData();
     setTimeout(()=>{
@@ -33,7 +33,7 @@ const Home: React.FC = () => {
   async function handeDelete(id: number) {
     prensent({
       header: 'Warning',
-      message: 'Do You Want To Delete This Room',
+      message: `Do You Want To Delete This Room With ID No: ${id} ?`,
       buttons: [
         'No',
         {
@@ -96,30 +96,6 @@ const Home: React.FC = () => {
             </div>
           </IonRow>
           <IonRow>
-            <div className="search-bar">
-              <IonCol size="9">
-                {/* <IonItem */}
-                  {/* <IonLabel position="floating">Select bedroom to filter</IonLabel> */}
-                  <IonList>
-                    <IonItem>
-                      <IonLabel position="floating">Select room</IonLabel>
-                      <IonSelect value="">
-                        <IonSelectOption value="One">One</IonSelectOption>
-                        <IonSelectOption value="Studio">Studio</IonSelectOption>
-                        <IonSelectOption value="Two">Two</IonSelectOption>
-                      </IonSelect>
-                    </IonItem>
-                  </IonList>
-                
-              </IonCol>
-              <IonCol size="3" className="btn-find">
-                  <IonList>
-                    <IonButton color="light" expand="block">
-                      <IonIcon icon={searchOutline} />
-                    </IonButton>
-                  </IonList>
-              </IonCol>
-            </div>
           </IonRow>
         </IonGrid>
         <IonGrid>
@@ -127,30 +103,32 @@ const Home: React.FC = () => {
             {room &&
               room.map((listRoom, index) =>
                 <IonCard key={index}>
-                  <IonCardHeader><h2>Room ID: {listRoom.id}</h2></IonCardHeader>
+                  <div className="card-header">
+                    <h2>Room ID: {listRoom.id}</h2>
+                  </div>
                   <IonCardContent>
-
-                    <IonRow>
-                      <IonCol size="7" className="display-content">
-                        <p> Property Type: </p>
-                        <p> Bed Rooms: </p>
-                        <p> Date Time Adding: </p>
-                        <p> Monthly Rent Price: </p>
-                        <p> Furniture Types: </p>
-                        <p> Name Reporter: </p>
-                        <p> Notes: </p>
-
-                      </IonCol>
-                      <IonCol size="5" className="display-detail">
-                        <p>{listRoom.properties}</p>
-                        <p>{listRoom.bedrooms}</p>
-                        <p>{listRoom.dateTime}</p>
-                        <p>{listRoom.monthlyRentPrice}</p>
-                        <p>{listRoom.furnished}</p>
-                        <p>{listRoom.reporter}</p>
-                        <p>{listRoom.notes}</p>
-                      </IonCol>
-                    </IonRow>
+                    <div className="card-content">
+                      <IonRow>
+                        <IonCol size="7" className="display-content">
+                          <p> Property Type: </p>
+                          <p> Bed Rooms: </p>
+                          <p> Date Time Adding: </p>
+                          <p> Monthly Rent Price: </p>
+                          <p> Furniture Types: </p>
+                          <p> Name Reporter: </p>
+                          <p> Notes: </p>
+                        </IonCol>
+                        <IonCol size="5" className="display-detail">
+                          <p>{listRoom.properties}</p>
+                          <p>{listRoom.bedrooms}</p>
+                          <p>{listRoom.dateTime}</p>
+                          <p>{listRoom.monthlyRentPrice} USD</p>
+                          <p>{listRoom.furnished}</p>
+                          <p>{listRoom.reporter}</p>
+                          <p>{listRoom.notes}</p>
+                        </IonCol>
+                      </IonRow>
+                    </div>
                   </IonCardContent>
                   <IonRow>
                     <IonCol className="btn-icon">
