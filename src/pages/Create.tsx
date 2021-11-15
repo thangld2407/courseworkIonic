@@ -1,5 +1,5 @@
 import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToast, IonToolbar, useIonAlert, useIonToast } from "@ionic/react";
-import { addCircleOutline as add, bed } from 'ionicons/icons'
+import { addCircleOutline as add } from 'ionicons/icons'
 
 import './Home.css';
 
@@ -13,7 +13,7 @@ export function isEmptyOrWhiteSpace(value: string) {
 }
 
 export function isNumber(value: string) {
-  const re = /^\d+$/;
+  const re = /^[1-9][0-9]*$/;
   return re.test(value);
 }
 
@@ -21,30 +21,6 @@ export function validateDate(value: string) {
   const re = /^\d{4}[\/.]\d{1,2}[\/.]\d{1,2}$/;
   return re.test(value);
 }
-
-function convertDate(date: string) {
-  if (!date) {
-    return '';
-  }
-
-  const newDate = new Date(date);
-
-  const year = newDate.getFullYear();
-  const month = (newDate.getMonth() + 1);
-  const day = newDate.getDay();
-
-
-  return mergeDate(year, month, day);
-};
-
-function mergeDate(year: number, month: number, date: number) {
-  if (!year && !month && !date) {
-    return '';
-  }
-
-  return `${year}/${month}/${date}`;
-};
-
 function validateForm(Form: any) {
   const properties = ['Flat', 'House', 'Bungalow'];
   const bedrooms = ['Studio', 'One', 'Two'];
@@ -104,9 +80,31 @@ function validateForm(Form: any) {
   }
   return isValidated;
 }
+function convertDate(date: string) {
+  if (!date) {
+    return '';
+  }
+
+  const newDate = new Date(date);
+
+  const year = newDate.getFullYear();
+  const month = (newDate.getMonth() + 1);
+  const day = newDate.getDate();
+
+
+  return mergeDate(year, month, day);
+};
+
+function mergeDate(year: number, month: number, date: number) {
+  if (!year && !month && !date) {
+    return '';
+  }
+
+  return `${year}/${month}/${date}`;
+};
 
 function notiError(err: any) {
-  const message = err.join('<br>');
+  const message = err.join(`<br>`);
 
   return `${message}`;
 }
@@ -129,13 +127,13 @@ const Create: React.FC = () => {
 
   const addNewRoom = async () => {
     const newRoom = {
-      properties: properties,
-      bedrooms: bedrooms,
+      properties,
+      bedrooms,
       dateTime: convertDate(dateTime),
-      monthlyRentPrice: monthlyRentPrice,
-      furnished: furnished,
-      notes: notes,
-      reporter: reporter,
+      monthlyRentPrice,
+      furnished,
+      notes,
+      reporter
     };
     const validateFormAddNewRoom: any = validateForm(newRoom);
 
@@ -156,20 +154,18 @@ const Create: React.FC = () => {
           {
             text: 'Yes', handler: async (d) => {
               await createRoom(newRoom);
-
               setMessage('Created a new rooom');
               setShowToast(true);
               setColorMessage('success');
-
-              history.push('/home');
-  
+              
               setTimeout(() => {
                 setShowToast(false);
               }, 3000);
+        
+              history.push('/home');
             }
           }
         ],
-        onDidDismiss: (e) => console.log("Dismiss")
       })
     } else {
       setMessage(notiError(validateFormAddNewRoom));

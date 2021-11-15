@@ -3,9 +3,10 @@ import { home as homeIcon, create as createIcon, home, add, close, createOutline
 
 import './Home.css';
 
-import { deleteRoom, getAllRoom, getByName } from '../databaseHandle';
+import { deleteRoom, getAllRoom } from '../databaseHandle';
 import { Room } from '../room';
 import { useEffect, useState } from 'react';
+
 const Home: React.FC = () => {
   const [room, setRooms] = useState<Room[]>([]);
   const [keySearch, setKeySearch] = useState('');
@@ -18,7 +19,6 @@ const Home: React.FC = () => {
     setRooms(allRoom);
   }
    useEffect(() => {
-    // console.log('use effect')
      fetchData();
   }, []);
   function doRefresh(event: any) {

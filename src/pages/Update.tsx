@@ -33,7 +33,7 @@ function convertDate(el: string) {
   const newDate = new Date(el);
   const year = newDate.getFullYear();
   const month = (newDate.getMonth() + 1);
-  const day = newDate.getDay();
+  const day = newDate.getDate();
 
 
   return mergeDate(year, month, day);
@@ -165,7 +165,7 @@ const Update: React.FC = () => {
       setColorMessage('success');
       await updateRoom(newRoom, idRoom);
 
-      history.goBack();
+      history.push('/home');
 
       setTimeout(() => {
         setShowToast(false);

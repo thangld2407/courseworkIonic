@@ -71,13 +71,6 @@ export async function getOneRoom(id: number) {
     return room;
 }
 
-export async function getByName(name: string) {
-    const db = await openDB(DATABASE_NAME, 1);
-    const roomByName = await db.transaction('room').objectStore('room').get(name);
-    console.log(roomByName);
-    return roomByName;
-}
-
 export async function getAllRoom() {
     const db = await openDB(DATABASE_NAME, 1);
 
