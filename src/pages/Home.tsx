@@ -21,7 +21,7 @@ const Home: React.FC = () => {
     // console.log('use effect')
      fetchData();
   }, []);
-  async function doRefresh(event: any) {
+  function doRefresh(event: any) {
     setMessage('Data have up to date');
     setShowToast(true);
     fetchData();

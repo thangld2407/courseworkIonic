@@ -118,7 +118,7 @@ const Update: React.FC = () => {
 
   const [properties, setProperties] = useState('');
   const [bedrooms, setBedrooms] = useState('');
-  const [dateTime, setDateTime] = useState(new Date().toISOString());
+  const [dateTime, setDateTime] = useState('');
   const [monthlyRentPrice, setMonthlyRentPrice] = useState('');
   const [furnished, setFurnished] = useState('');
   const [notes, setNotes] = useState('');
@@ -135,7 +135,7 @@ const Update: React.FC = () => {
 
     setProperties(room.properties);
     setBedrooms(room.bedrooms);
-    setDateTime(room.dateTime);
+    setDateTime(convertDate(room.dateTime));
     setFurnished(room.furnished);
     setMonthlyRentPrice(room.monthlyRentPrice);
     setReporter(room.reporter);
@@ -155,6 +155,7 @@ const Update: React.FC = () => {
       notes: notes,
       reporter: reporter,
     };
+    console.log(newRoom.furnished);
     const validateFormAddNewRoom: any = validateForm(newRoom);
 
     if (validateFormAddNewRoom.length === 0) {
@@ -221,7 +222,7 @@ const Update: React.FC = () => {
             <IonLabel position="floating">Furniture Type</IonLabel>
             <IonSelect value={furnished} onIonChange={e => setFurnished(e.detail.value)} >
               <IonSelectOption value="Furnished">Furnished</IonSelectOption>
-              <IonSelectOption value="Part Furnished">Part Furnished</IonSelectOption>
+              <IonSelectOption value="PartFurnished">Part Furnished</IonSelectOption>
               <IonSelectOption value="Unfurnished">Unfurnished</IonSelectOption>
             </IonSelect>
           </IonItem>

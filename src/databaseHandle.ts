@@ -37,13 +37,14 @@ export async function updateRoom(dataUpdateRoom: any, id: number) {
     room.bedrooms = dataUpdateRoom.bedrooms;
     room.dateTime = dataUpdateRoom.dateTime;
     room.monthlyRentPrice = dataUpdateRoom.monthlyRentPrice;
+    room.furnished = dataUpdateRoom.furnished;
     room.notes = dataUpdateRoom.notes;
     room.reporter = dataUpdateRoom.reporter;
 
     await db.put('room', room)
         .then(() => {
             console.log("udpate susccessfully");
-            console.log(room);
+            // console.log(room);
         })
         .catch((err) => {
             console.log(err);
